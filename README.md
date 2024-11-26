@@ -155,4 +155,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ---
 
 
-**Created with ❤️ by AI Enthusiasts**
+**Created with ❤️ by AI Enthusiasts | [**Try the App**](https://bascirag-chatpdf.streamlit.app/)**
