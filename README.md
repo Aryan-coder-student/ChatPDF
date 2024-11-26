@@ -1,134 +1,160 @@
+# 📚 Document Chat Assistant 🤖
 
-# 📚 Document Chat Assistant Documentation  
+<div align="center">
+    <img src="https://img.shields.io/badge/Language-Python-blue?style=for-the-badge&logo=python" alt="Python">
+    <img src="https://img.shields.io/badge/Framework-Streamlit-red?style=for-the-badge&logo=streamlit" alt="Streamlit">
+    <img src="https://img.shields.io/badge/AI-Retrieval%20Augmented%20Generation-green?style=for-the-badge" alt="RAG">
+</div>
 
-This application allows users to upload multiple documents (PDF or TXT files) and interact with them through a chat interface using **Retrieval-Augmented Generation (RAG)**. The assistant extracts relevant information from the uploaded documents and generates detailed responses to user queries.  
+## 🌟 Project Overview
 
----
-
-## **Features**  
-1. **Multi-document Upload**: Upload multiple PDF and TXT files simultaneously.  
-2. **Document Processing**: Automatically parses and preprocesses uploaded documents into manageable chunks for better retrieval.  
-3. **RAG-based Interaction**: Combines a retrieval mechanism and a language model for generating context-aware responses.  
-4. **Persistent Storage**: Uses `Chroma` for storing document embeddings and efficient retrieval.  
-5. **Interactive Chat Interface**: Allows users to ask questions based on document content and get detailed answers.  
-6. **Reset Options**: Clear chat history or delete the database to start afresh.  
+Revolutionize document interaction with our cutting-edge **Document Chat Assistant**! This intelligent application empowers users to upload, analyze, and explore multiple documents through an intuitive, AI-powered chat interface.
 
 ---
 
-## **Application Workflow**
+## ✨ Key Features
 
-### **1. Sidebar Interface**  
-- **Document Upload**:  
-   - Users can upload one or more files in PDF or TXT format.  
-   - The app preprocesses documents and splits them into smaller chunks.  
-   - Progress and success messages are displayed during processing.  
-
-- **Instructions**:  
-   - Guides users on how to use the assistant.  
-
-- **Buttons**:  
-   - **Clear Chat History**: Resets the chat interface.  
-   - **Clear Database**: Deletes the stored embeddings and disables the chat until new documents are uploaded.  
+| Feature | Description | 🚀 Highlights |
+|---------|-------------|---------------|
+| 🗂️ Multi-Document Upload | Upload PDF and TXT files seamlessly | Process multiple documents simultaneously |
+| 🧠 Smart Document Processing | Advanced document chunking and embedding | Uses state-of-the-art NLP techniques |
+| 💬 RAG-Powered Interaction | Context-aware response generation | Combines retrieval and language models |
+| 💾 Persistent Document Storage | Efficient embedding management | Utilizes Chroma for quick information retrieval |
+| 🤝 Interactive Chat Interface | Natural language document exploration | Ask complex questions, get precise answers |
+| 🔄 Flexible Reset Options | Manage chat and database | Easy reset for new document sets |
 
 ---
 
-### **2. Chat Interface**  
-- Users can type questions related to the uploaded documents.  
-- The assistant retrieves relevant information from the documents and generates answers using an LLM.  
-- Both user and assistant messages are displayed in a structured, conversational format.  
+<div align="center">
+       ![image](https://github.com/user-attachments/assets/af6cf2c8-de42-4918-9ecf-8baf642c5c95)
+</div>
+
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- 🐍 Python 3.8+
+- 📦 pip package manager
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/document-chat-assistant.git
+
+# Navigate to project directory
+cd document-chat-assistant
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### Running the Application
+
+```bash
+# Launch Streamlit application
+streamlit run app.py
+```
 
 ---
 
-## **Code Breakdown**
+## 🔍 How It Works
 
-### **Document Upload and Processing**  
-- **File Uploader**:  
-   ```python
-   uploaded_files = st.file_uploader("Upload Documents", type=["pdf", "txt"], accept_multiple_files=True)
-   ```  
-   Allows users to upload documents.  
+```mermaid
+graph TD
+    A[Upload Documents] --> B[Preprocess Documents]
+    B --> C[Create Embeddings]
+    C --> D[Store in Chroma]
+    D --> E[User Query]
+    E --> F[Retrieve Relevant Context]
+    F --> G[Generate AI Response]
+    G --> H[Display Answer]
+```
 
-- **Processing Documents**:  
-   - Uses `PyPDFLoader` for PDF files and `TextLoader` for TXT files.  
-   - Splits the documents into smaller chunks using `RecursiveCharacterTextSplitter`.  
-   - Converts chunks into embeddings using `HuggingFaceEmbeddings`.  
-   - Stores embeddings in a persistent Chroma database.  
+### Code Breakdown
 
----
+#### Document Upload and Processing
 
-### **RAG-based Chat System**  
-- **Retriever and LLM**:  
-   - Uses a **Chroma retriever** for fetching relevant document passages.  
-   - Leverages **ChatGroq** with the Llama 3.1 model for generating answers.  
+**File Uploader**:
+```python
+uploaded_files = st.file_uploader(
+    "Upload Documents", 
+    type=["pdf", "txt"], 
+    accept_multiple_files=True
+)
+```
 
-- **Custom Prompt**:  
-   The prompt ensures that answers are generated solely based on the provided context:  
-   ```python
-   template = """
-   You are a chat bot answer the following question based only on the provided context.
-   Think step by step before providing a detailed answer.
-   <context>
-   {context}
-   </context>
-   Question: {input}
-   """  
-   ```  
+**Document Processing Workflow**:
+```python
+def process_documents(uploaded_files):
+    documents = []
+    for file in uploaded_files:
+        # Use appropriate loader based on file type
+        if file.type == "application/pdf":
+            loader = PyPDFLoader(file)
+        else:
+            loader = TextLoader(file)
+        
+        # Split documents into chunks
+        text_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=500,
+            chunk_overlap=50
+        )
+        document_chunks = text_splitter.split_documents(loader.load())
+        
+        # Create embeddings
+        embeddings = HuggingFaceEmbeddings()
+        vectorstore.add_documents(document_chunks)
+        
+    return documents
+```
 
----
+#### RAG Prompt Template
+```python
+prompt_template = """
+You are a helpful assistant. Answer the question based strictly on the provided context.
+Think step by step and provide a detailed, accurate response.
 
-### **Session State Management**  
-- Maintains user messages, retriever chains, and processing status across interactions using `st.session_state`.  
+Context:
+{context}
 
----
+Question: {question}
+Helpful Answer:"""
+```
 
-### **Chat Display**  
-- Messages are displayed using a structured layout styled with custom HTML and CSS:  
-   ```python
-   st.markdown(
-       """
-       <style>
-           .chat-message { ... }
-       </style>
-       """,
-       unsafe_allow_html=True
-   )
-   ```  
+### Key Technologies
 
----
-
-### **Reset Functionality**  
-- **Clear Chat History**:  
-   ```python
-   st.session_state.messages = []
-   st.rerun()
-   ```  
-
-- **Clear Database**:  
-   Deletes the Chroma database and resets the retriever chain.
-
----
-
-## **Installation and Setup**
-
-### **1. Prerequisites**
-- Python 3.8 or higher  
-- Install dependencies:  
-  ```bash
-  pip install streamlit langchain chromadb langchain_huggingface langchain_groq python-dotenv
-  ```
+- 🧠 **AI/ML**: 
+  - LangChain
+  - HuggingFace Embeddings
+  - ChatGroq
+- 🌐 **Web Framework**: Streamlit
+- 💾 **Vector Database**: Chroma
 
 ---
 
-### **2. Running the Application**
-- Start the Streamlit server:  
-  ```bash
-  streamlit run app.py
-  ```  
+## 🤝 Contributing
+
+Interested in improving the Document Chat Assistant? We welcome contributions!
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
-## **Conclusion**  
-This assistant simplifies interacting with large amounts of document data by combining modern NLP techniques with an intuitive user interface. It is a powerful tool for extracting knowledge from documents and answering questions efficiently.  
+## 📜 License
 
----  
-**Created with ❤️ using Streamlit and LangChain**.
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+
+**Created with ❤️ by AI Enthusiasts**
