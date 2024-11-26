@@ -145,7 +145,7 @@ pyreadline3
 python-dateutil
 python-dotenv
 python-iso639
-python-magic  # Replaced python-magic-bin with python-magic
+
 python-oxmsg
 pytz
 pywin32
