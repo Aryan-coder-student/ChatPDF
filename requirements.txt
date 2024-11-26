@@ -148,7 +148,7 @@ python-iso639
 
 python-oxmsg
 pytz
-pywin32
+
 PyYAML
 pyzmq
 RapidFuzz
