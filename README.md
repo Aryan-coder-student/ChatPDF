@@ -25,9 +25,7 @@ Revolutionize document interaction with our cutting-edge **Document Chat Assista
 
 ---
 
-<div align="center">
-       ![image](https://github.com/user-attachments/assets/af6cf2c8-de42-4918-9ecf-8baf642c5c95)
-</div>
+![image](https://github.com/user-attachments/assets/af6cf2c8-de42-4918-9ecf-8baf642c5c95)
 
 
 ## 🚀 Getting Started
