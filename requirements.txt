@@ -146,7 +146,6 @@ python-dateutil
 python-dotenv
 python-iso639
 python-magic
-python-magic-bin# Replaced python-magic-bin with python-magic
 python-oxmsg
 pytz
 pywin32
